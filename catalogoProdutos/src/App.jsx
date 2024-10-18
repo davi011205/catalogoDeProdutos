@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import React, { useEffect, useState } from 'react';
+import { db } from './scripts/firebaseConfig'; // Importa a configuração do Firebase
+import { collection, getDocs } from 'firebase/firestore';
+import ListaProdutos from './componentes/ListaProdutos';
+import CarrinhoDeCompra from './componentes/CarrinhoDeCompra';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [itensCarrinho, setItensCarrinho] = useState([]);
+  const [produtos, setProdutos] = useState([]);
+  const [selectedCategoria, setSelectedCategoria] = useState(null);
+
+  useEffect(() => {
+    const fetchProdutos = async () => {
+      const produtosCollection = collection(db, 'produtos');
+      const produtosSnapshot = await getDocs(produtosCollection);
+      const produtosList = produtosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setProdutos(produtosList);
+    };
+
+    fetchProdutos();
+  }, []); // O array vazio significa que isso será executado apenas uma vez após o componente ser montado
+
+  const handleCategoriaFilterChange = (categoria) => {
+    setSelectedCategoria(categoria);
+  };
+
+  const handleAddToCart = (produto) => {
+    setItensCarrinho((prevItems) => {
+      const itemExistente = prevItems.find((item) => item.id === produto.id);
+
+      if (itemExistente) {
+        // Se o item já existe, atualiza a quantidade
+        return prevItems.map((item) =>
+          item.id === produto.id
+            ? { ...item, quantidade: (item.quantidade || 1) + 1 } // Se quantidade não existir, inicializa como 1
+            : item
+        );
+      } else {
+        // Se o item não existe, adiciona ao carrinho
+        return [...prevItems, { ...produto, quantidade: 1 }];
+      }
+    });
+  };
+
+  const filteredProdutos = selectedCategoria
+    ? produtos.filter((produto) => produto.categoria === selectedCategoria)
+    : produtos;
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <h1>Produtos a Pronta Entrega</h1>
+      <div className="filter-buttons">
+        <button onClick={() => handleCategoriaFilterChange(null)}>Todos</button>
+        <button onClick={() => handleCategoriaFilterChange('teste')}>Crédito</button>
+        <button onClick={() => handleCategoriaFilterChange('teste2')}>Débito</button>
+        <button onClick={() => handleCategoriaFilterChange('credito/debito')}>Crédito/Débito</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <ListaProdutos produtos={filteredProdutos} adicionarNoCarrinho={handleAddToCart} />
+      <CarrinhoDeCompra itensCarrinho={itensCarrinho} />
+    </div>
+  );
 }
 
-export default App
+export default App;
