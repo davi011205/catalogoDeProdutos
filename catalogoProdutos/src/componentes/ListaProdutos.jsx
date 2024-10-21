@@ -27,9 +27,12 @@ function ListaProdutos({ produtos, adicionarNoCarrinho }) {
           onClick={() => handleProdutoClick(produto)}
         >
           <img src={produto.imagem} alt={produto.nome} />
-          <h3>{produto.nome}</h3>
-          <p>{produto.infoAdicionais}</p>
-          <p>R$ {produto.preco}</p>
+          <h3 className='produto-nome'>{produto.nome}</h3>
+          <p className='produto-descricao'>{produto.infoAdicionais}</p>
+          <p className='produto-preco'>R$ {produto.preco}</p>
+          <p className="produto-quantidade">
+            {produto.quantidade == 0 ? "Produto indisponível no momento" : `disponível: ${produto.quantidade}`}
+          </p>
           {hoverProduto === produto && (
             <div className="hover-content">{produto.hover}</div>
           )}

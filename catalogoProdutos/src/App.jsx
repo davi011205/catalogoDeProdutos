@@ -4,11 +4,13 @@ import { db } from './scripts/firebaseConfig'; // Importa a configuração do Fi
 import { collection, getDocs } from 'firebase/firestore';
 import ListaProdutos from './componentes/ListaProdutos';
 import CarrinhoDeCompra from './componentes/CarrinhoDeCompra';
+import { FaShoppingCart } from 'react-icons/fa'; // Importa o ícone de carrinho
 
 function App() {
   const [itensCarrinho, setItensCarrinho] = useState([]);
   const [produtos, setProdutos] = useState([]);
   const [selectedCategoria, setSelectedCategoria] = useState(null);
+  const [mostrarCarrinho, setMostrarCarrinho] = useState(false); // Estado para controlar a exibição do carrinho
 
   useEffect(() => {
     const fetchProdutos = async () => {
@@ -44,20 +46,34 @@ function App() {
   };
 
   const filteredProdutos = selectedCategoria
-    ? produtos.filter((produto) => produto.categoria === selectedCategoria)
-    : produtos;
+  ? produtos.filter((produto) =>
+      produto.categoria.split(',').map(cat => cat.trim()).includes(selectedCategoria)
+    )
+  : produtos;
+
 
   return (
-    <div className="App">
-      <h1>Produtos a Pronta Entrega</h1>
-      <div className="filter-buttons">
-        <button onClick={() => handleCategoriaFilterChange(null)}>Todos</button>
-        <button onClick={() => handleCategoriaFilterChange('teste')}>Crédito</button>
-        <button onClick={() => handleCategoriaFilterChange('teste2')}>Débito</button>
-        <button onClick={() => handleCategoriaFilterChange('credito/debito')}>Crédito/Débito</button>
+    <div id='root'>
+      <header>
+        <h1>Produtos a Pronta Entrega</h1>
+        <div className="cart-icon-container" onClick={() => setMostrarCarrinho(!mostrarCarrinho)}>
+          <FaShoppingCart size={40} className="cart-icon" /> {/* Ícone maior para melhor visualização */}
+          {itensCarrinho.length > 0 && (
+            <span className="cart-count">{itensCarrinho.length}</span>
+          )} {/* O contador só aparece quando há itens no carrinho */}
+        </div>
+     
+        {mostrarCarrinho && <CarrinhoDeCompra itensCarrinho={itensCarrinho} />}
+        <div className="filter-buttons">
+          <button onClick={() => handleCategoriaFilterChange(null)}>Todos</button>
+          <button onClick={() => handleCategoriaFilterChange('eudora')}>Eudora</button>
+          <button onClick={() => handleCategoriaFilterChange('natura')}>Natura</button>
+          <button onClick={() => handleCategoriaFilterChange('oboticario')}>OBoticário</button>
+        </div>
+      </header>
+      <div>
+        <ListaProdutos produtos={filteredProdutos} adicionarNoCarrinho={handleAddToCart} />
       </div>
-      <ListaProdutos produtos={filteredProdutos} adicionarNoCarrinho={handleAddToCart} />
-      <CarrinhoDeCompra itensCarrinho={itensCarrinho} />
     </div>
   );
 }
