@@ -24,6 +24,7 @@ header {
   transform: translate(-50%, -50%);
   width: 100vw;
   backdrop-filter: blur(2px);
+  z-index: 1;
   
   h1 {
     margin: 0;
@@ -116,7 +117,7 @@ header {
 
 @media (min-width: 320px) and (max-width: 480px) {
   header {
-    padding-top: 6dvh;
+    padding-top: 18dvh;
 
     h1 {
       font-size: 2.5rem;
@@ -130,7 +131,7 @@ header {
   }
 
   .produto-list {
-    margin: 25dvh auto 2vh 0;
+    margin: 38dvh auto 2vh 0;
     width: 95vw;
   }
 
