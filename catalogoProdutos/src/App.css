@@ -49,17 +49,19 @@ header {
   cursor: pointer;
   transition: transform 0.2s;
   width: 300px;
+  height: 400px;
   margin-bottom: 15px;
   background-color: #190435;
 }
 
 .produto-card img {
   width: 100%;
+  height: 50%;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   margin: 0;
   padding: 0;
-  height: 50%;
+  object-fit:cover;
 }
 .produto-card button {
   margin: 2vh 0 4vh 0;
@@ -110,3 +112,13 @@ header {
   font-weight: bold;
   line-height: 1;
 } 
+
+@media (min-width: 320px) and (max-width: 480px) {
+  header {
+    padding-top: 10vh;
+  }
+
+  .produto-list {
+    margin: 30vh auto 2vh 0;
+  }
+}
