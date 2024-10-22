@@ -29,9 +29,10 @@ header {
     margin: 0;
   }
 }
+
 .filter-buttons button {
   border: 1px solid #6f00ff;
-  margin-right: 10px;
+  margin: 6px;
 }
 
 .produto-list {
@@ -115,10 +116,47 @@ header {
 
 @media (min-width: 320px) and (max-width: 480px) {
   header {
-    padding-top: 10vh;
+    padding-top: 6dvh;
+
+    h1 {
+      font-size: 2.5rem;
+    }
+  }
+
+  .filter-buttons button {
+    border: 1px solid #6f00ff;
+    scale: 0.9;
+    margin: 2px;
   }
 
   .produto-list {
-    margin: 30vh auto 2vh 0;
+    margin: 25dvh auto 2vh 0;
+    width: 95vw;
+  }
+
+  .produto-card {
+    width: 44vw;
+    height: 380px;
+  }
+
+  .produto-card img {
+    height: 40%;
+  }
+  
+  .produto-card button {
+    margin: 1vh;
+    scale: 0.8;
+    border: 1px solid #6f00ff;
+  }
+  
+  .produto-nome, .produto-descricao, .produto-preco, .produto-quantidade {
+    text-align:left;
+    padding-left: 8px;
+    margin: 0;
+  }
+  
+  .produto-nome {
+    color: #6f00ff;
+    font-size: 1.6rem;
   }
 }
