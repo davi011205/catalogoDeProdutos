@@ -1,8 +1,21 @@
 import React from 'react';
+import { FaTrash } from 'react-icons/fa'; // Usando react-icons para o ícone de lixeira
 
-function CarrinhoDeCompra({ itensCarrinho }) {
+function CarrinhoDeCompra({ itensCarrinho, setItensCarrinho }) {
   // Calcula o total considerando a quantidade de cada item
   const total = itensCarrinho.reduce((acc, item) => acc + (typeof item.preco === 'string' ? parseFloat(item.preco) : item.preco) * (item.quantidade || 1), 0);
+
+  const handleQuantidadeChange = (id, novaQuantidade) => {
+    const novosItens = itensCarrinho.map(item => 
+      item.id === id ? { ...item, quantidade: novaQuantidade } : item
+    );
+    setItensCarrinho(novosItens);
+  };
+
+  const handleRemoverItem = (id) => {
+    const novosItens = itensCarrinho.filter(item => item.id !== id);
+    setItensCarrinho(novosItens);
+  };
 
   const handleFecharPedido = () => {
     const itensNomes = itensCarrinho.map(item => `${item.quantidade || 1} ${item.nome}`).join(', ');
@@ -14,17 +27,47 @@ function CarrinhoDeCompra({ itensCarrinho }) {
   };
 
   return (
-    <div className="shopping-cart">
-      <h2>Meu Carrinho</h2>
-      <ul>
+    <div className="carrinhoDeCompra">
+      <div className='carrinhoTitulo'>
+        <h2>Minha sacola</h2>
+        X
+      </div>
+      <div className="produtoCarrinho">
         {itensCarrinho.map((item) => (
-          <li key={item.id}>
-            {item.nome} - ${item.preco} (x{item.quantidade || 1})
-          </li>
+          <div key={item.id} className='produtosAdicionados'>
+            <div className="imagemProdutoCarrinho">
+              <img src={item.imagem} alt={item.nome} />
+            </div>
+            <div className="detalhesProdutosCarrinho" >
+              <div className="nomeLixeiraProdutoCarrinho">
+                <p>{item.nome}</p>
+                <FaTrash 
+                  onClick={() => handleRemoverItem(item.id)} 
+                />
+              </div>
+              <input 
+                type="number" 
+                value={item.quantidade} 
+                min="1" 
+                onChange={(e) => handleQuantidadeChange(item.id, parseInt(e.target.value))} 
+              />
+              <div className="precoProdutoCarrinho">
+                <p>${(typeof item.preco === 'string' ? parseFloat(item.preco) : item.preco).toFixed(2)}</p>
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
-      <p>Total: ${total.toFixed(2)}</p>
-      <button onClick={handleFecharPedido}>Fechar Pedido</button>
+      </div>
+      <div className='totalCarrinho'>
+        <div className='valor'>
+          <p>Total:</p>
+          <p>${total.toFixed(2)}</p>
+        </div>
+        <div className='concluirPedido'>
+          <p>você será direcionado para o whatsApp</p>
+          <button onClick={handleFecharPedido}>Fechar Pedido</button>
+        </div>
+      </div>
     </div>
   );
 }

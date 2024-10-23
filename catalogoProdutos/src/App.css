@@ -71,6 +71,12 @@ button:focus-visible {
   }
 }
 
+.whatsApp {
+  position: fixed;
+  right: 20px;
+  bottom: 40px;
+  color: var(--corDetalhes);
+}
 
 header {  
   /* header geral */
@@ -86,52 +92,46 @@ header {
 
 
   /* chamada para ver as xícaras */
-  .disclaimerXicaras {
+  .disclaimerXicaras {  
     display: flex;
     justify-content: center;
-    background-color: red; /* Mantenha a cor de fundo desejada */
+    align-items: center;
+    gap: 6px;
+    background-color: var(--corHover); /* Mantenha a cor de fundo desejada */
     width: 100vw;
-    transition: opacity 1s ease-in-out; /* Transição suave para a opacidade */
 
-    p {
-     
+    p { 
+      display: inline;
     }
-
-    &:hover p{
-      animation: none;
-    }
-  }
-
-  .fade-in {
-    display: visible; /* Visível */
-  }
-  
-  .fade-out {
-    display: none; /* Invisível */
   }
 
   /* div que envolve o titulo a pesquisa e o carrinho */
   .tituloPesquisaCarrinho {
-    width: 100%;
+    width: 100vw;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content:center;
     align-items: center;
-    gap: 10px;
+    padding-top: 1.5dvh;
+    /* gap: 100px; */
+    gap: 50px;
   }
 
   /* div dos filtros */
   .filter-buttons {
     width: 100vw;
+    flex-wrap: wrap;
     display: flex;
     justify-content: center;
   
-    /* background-color: blue; */
-    
+
     div{
       padding: 5px 15px;
+      cursor: pointer;
+      margin-right: 2vw;
 
-      &:hover {
+      
+      /* &:hover {
         background-color: var(--corHover);
       }
 
@@ -139,6 +139,19 @@ header {
         border-bottom: 1px solid var(--corDetalhes);
       }
 
+      &:nth-child(1){
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      &:nth-child(2) {
+        color: var(--corDetalhes);
+        display: flex;
+        align-items: baseline;
+        justify-content: space-around;
+        gap: 4px;
+      } */
     }
   }
 
@@ -150,18 +163,17 @@ header {
 
   /* div pesquisa */
   .pesquisaESugestao {
-    width: 100%;
-    max-width: 400px;
+
+    width: 45vw;
     position: relative; /* para que as sugestões sejam posicionadas relativas a essa div */
 
     .containerPesquisa {
       display: flex;
       align-items: center;
       border: 1px solid #10058c5b;
-      padding: 5px;
-      border-radius: 5px;
+      padding: 10px;
+      border-radius: 10px;
       flex-wrap: wrap;
-      border: 1px solid green;
       position: relative; /* posicionamento relativo para ajustar as sugestões */
 
     }
@@ -251,7 +263,7 @@ header {
   .cart-icon-container {
     position: relative;
     display: inline-block;
-    cursor: pointer;
+    cursor: pointer;    
   }
   
   .cart-count {
@@ -267,15 +279,101 @@ header {
     line-height: 1;
   } 
 
-  .shopping-cart {
-    padding: 20px;
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 10vw;
-    height: 100%;
+  
+}
+
+.carrinhoDeCompra {
+  padding: 1vh 1vw;
+  width: 23vw;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background-color: var(--corHover);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  /* border: 5px solid pink; */
+
+  .carrinhoTitulo {
+    width: 100%;
+    /* border: 5px solid green; */
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .produtoCarrinho {
+    border: 5px solid red;
+    width: 100%;
+    height: 75%;
     overflow-y: auto;
-    background-color: black;
+
+    .produtosAdicionados {
+      border: 1px solid green;
+      display: flex;
+
+      .imagemProdutoCarrinho {
+        border: 1px solid orange;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 100px;
+          height: 100px;
+        }
+      }
+
+      .detalhesProdutosCarrinho {
+        border: 2px solid purple;
+        width: 60%;
+
+        .nomeLixeiraProdutoCarrinho {
+          border: 3px solid orange;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+
+  .totalCarrinho {
+    /* border: 1px solid orange; */
+    width: 100%;
+    height: 25%;
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--corHover);
+    
+    .valor {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      /* border: 1px solid orange; */
+      height: 20%;
+    }
+
+    .concluirPedido {
+      /* border: 3px solid green; */
+      width: 100%;
+      height: 70%;
+
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 0.8rem;
+      }
+
+      button {
+        width: 85%;
+      }
+    }
+
+
   }
 
 }
@@ -331,6 +429,53 @@ header {
   background-color: var(--corHover); /* Fundo cinza */
 }
 
+
+.sugestoesFiltro {
+  margin-top: 0.9vh;
+  border: 1px solid #10058c5b;
+  position: absolute; /* posição absoluta para sobrepor o conteúdo */
+  width: 65%;
+  background-color: white;
+  z-index: 1; 
+  left: 22vw;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: start;
+}
+
+.sugestoesFiltro ul {
+  list-style: none;
+  text-align: left;
+  padding-left: 1vw;
+  cursor: pointer;
+  width: 25%;
+  font-size: 1.1rem;
+  
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 1vh;
+  }
+
+  li {
+    margin: auto auto 2vh 0;
+    display: flex;
+    
+    &:last-child {
+      color: var(--corDetalhes);
+    }
+      
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+}
+
+.sugestoesFiltro li:hover {
+  color: var(--corDetalhes);
+  font-weight: bold;
+}
 
 @media (min-width: 320px) and (max-width: 480px) {
   header {

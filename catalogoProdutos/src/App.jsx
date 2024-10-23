@@ -6,7 +6,9 @@ import ListaProdutos from './componentes/ListaProdutos';
 import CarrinhoDeCompra from './componentes/CarrinhoDeCompra';
 import SugestoesPesquisa from './componentes/SugestoesPesquisa';
 import Disclaimer from './componentes/Disclaimer';
-import { FaShoppingCart, FaSearch } from 'react-icons/fa'; 
+import { FaShoppingCart, FaSearch, FaListUl, FaStar, FaWhatsapp } from 'react-icons/fa'; 
+import SugestoesPesquisaCuidadoFacial from './componentes/SugestoesPesquisaCuidadoFacial';
+import SugestoesPesquisaMaquiagem from './componentes/SugestoesPesquisaMaquiagem';
 
 function App() {
   const [itensCarrinho, setItensCarrinho] = useState([]);
@@ -14,6 +16,8 @@ function App() {
   const [selectedCategoria, setSelectedCategoria] = useState(null);
   const [mostrarCarrinho, setMostrarCarrinho] = useState(false); 
   const [mostrarSugestoes, setMostrarSugestoes] = useState(false); 
+  const [mostrarSugestoesMaquiagem, setMostrarSugestoesMaquiagem] = useState(false); 
+  const [mostrarSugestoesCuidadoFacial, setMostrarSugestoesCuidadoFacial] = useState(false); 
 
   useEffect(() => {
     const fetchProdutos = async () => {
@@ -58,7 +62,7 @@ function App() {
   return (
     <div>
       <header >
-        {/* <Disclaimer></Disclaimer> */}
+        <Disclaimer></Disclaimer>
         <div className='tituloPesquisaCarrinho'>
           <div className='titulo'>
             <h1>Produtos a Pronta Entrega</h1>
@@ -70,17 +74,17 @@ function App() {
                 type="text"
                 placeholder="O que você procura?" 
                 className="inputPesquisa" 
-                onFocus={() => {
+                onFocus = {() => {
                   setMostrarSugestoes(true);
                 }}
-                onBlur={() => {
+                onBlur = {() => {
                   setTimeout(() => setMostrarSugestoes(false), 200);
                 }}
                 
               />
               <span className="iconePesquisa"><FaSearch /></span>
             </div>
-            {mostrarSugestoes && <SugestoesPesquisa />}
+            {mostrarSugestoes && <SugestoesPesquisa/>}
           </div>
 
         <div className="cart-icon-container" onClick={() => setMostrarCarrinho(!mostrarCarrinho)}>
@@ -89,23 +93,40 @@ function App() {
             <span className="cart-count">{itensCarrinho.length}</span>
           )} {/* O contador só aparece quando há itens no carrinho */}
         </div>
-          </div>
+      </div>
 
         <div className="filter-buttons">
           <div onClick={() => handleCategoriaFilterChange(null)}>
-            Todas as categorias
+            <FaListUl></FaListUl> Todas as categorias
           </div>
 
           <div onClick={() => handleCategoriaFilterChange('promocao')}>
-            Promoções
+            <FaStar style={{scale: '1.1'}}></FaStar> Promoções
           </div>
 
-          <div onClick={() => handleCategoriaFilterChange('cuidadoFacial')}>
+          <div onClick={() => handleCategoriaFilterChange('cuidadoFacial')}
+            onMouseEnter = {() => {
+              setMostrarSugestoesCuidadoFacial(true);
+            }}
+            onMouseLeave = {() => {
+              setTimeout(() => setMostrarSugestoesCuidadoFacial(false), 200);
+            }}
+          >
             Cuidados Faciais
+            {mostrarSugestoesCuidadoFacial && <SugestoesPesquisaCuidadoFacial/>}
           </div>
 
-          <div onClick={() => handleCategoriaFilterChange('maquiagem')}>
+          <div onClick={() => handleCategoriaFilterChange('maquiagem')}
+            onMouseEnter = {() => {
+              setMostrarSugestoesMaquiagem(true);
+            }}
+            onMouseLeave = {() => {
+              setTimeout(() => setMostrarSugestoesMaquiagem(false), 200);
+            }}
+          >
             Maquiagem
+            {mostrarSugestoesMaquiagem && <SugestoesPesquisaMaquiagem/>}
+
           </div>
 
           <div onClick={() => handleCategoriaFilterChange('cuidadoCorporal')}>
@@ -126,6 +147,7 @@ function App() {
       
       <div>
         <ListaProdutos produtos={filteredProdutos} adicionarNoCarrinho={handleAddToCart} />
+        <FaWhatsapp size={40} className='whatsApp'></FaWhatsapp>
       </div>
     </div>
   );

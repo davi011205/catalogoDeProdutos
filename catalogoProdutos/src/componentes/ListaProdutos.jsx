@@ -36,7 +36,7 @@ function ListaProdutos({ produtos, adicionarNoCarrinho }) {
           {hoverProduto === produto && (
             <div className="hover-content">{produto.hover}</div>
           )}
-          <button onClick={() => adicionarNoCarrinho(produto)}>Adicionar ao Carrinho</button>
+          <button onClick={() => adicionarNoCarrinho(produto)}>Adicionar</button>
         </div>
       ))}
     </div>
