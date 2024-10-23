@@ -4,13 +4,16 @@ import { db } from './scripts/firebaseConfig'; // Importa a configuração do Fi
 import { collection, getDocs } from 'firebase/firestore';
 import ListaProdutos from './componentes/ListaProdutos';
 import CarrinhoDeCompra from './componentes/CarrinhoDeCompra';
-import { FaShoppingCart } from 'react-icons/fa'; // Importa o ícone de carrinho
+import SugestoesPesquisa from './componentes/SugestoesPesquisa';
+import Disclaimer from './componentes/Disclaimer';
+import { FaShoppingCart, FaSearch } from 'react-icons/fa'; 
 
 function App() {
   const [itensCarrinho, setItensCarrinho] = useState([]);
   const [produtos, setProdutos] = useState([]);
   const [selectedCategoria, setSelectedCategoria] = useState(null);
-  const [mostrarCarrinho, setMostrarCarrinho] = useState(false); // Estado para controlar a exibição do carrinho
+  const [mostrarCarrinho, setMostrarCarrinho] = useState(false); 
+  const [mostrarSugestoes, setMostrarSugestoes] = useState(false); 
 
   useEffect(() => {
     const fetchProdutos = async () => {
@@ -53,24 +56,74 @@ function App() {
 
 
   return (
-    <div id='root'>
-      <header>
-        <h1>Produtos a Pronta Entrega</h1>
+    <div>
+      <header >
+        {/* <Disclaimer></Disclaimer> */}
+        <div className='tituloPesquisaCarrinho'>
+          <div className='titulo'>
+            <h1>Produtos a Pronta Entrega</h1>
+          </div>
+
+          <div className='pesquisaESugestao'>
+            <div id="pesquisa" className="containerPesquisa">
+              <input 
+                type="text"
+                placeholder="O que você procura?" 
+                className="inputPesquisa" 
+                onFocus={() => {
+                  setMostrarSugestoes(true);
+                }}
+                onBlur={() => {
+                  setTimeout(() => setMostrarSugestoes(false), 200);
+                }}
+                
+              />
+              <span className="iconePesquisa"><FaSearch /></span>
+            </div>
+            {mostrarSugestoes && <SugestoesPesquisa />}
+          </div>
+
         <div className="cart-icon-container" onClick={() => setMostrarCarrinho(!mostrarCarrinho)}>
           <FaShoppingCart size={40} className="cart-icon" /> {/* Ícone maior para melhor visualização */}
           {itensCarrinho.length > 0 && (
             <span className="cart-count">{itensCarrinho.length}</span>
           )} {/* O contador só aparece quando há itens no carrinho */}
         </div>
-     
-        {mostrarCarrinho && <CarrinhoDeCompra itensCarrinho={itensCarrinho} />}
+          </div>
+
         <div className="filter-buttons">
-          <button onClick={() => handleCategoriaFilterChange(null)}>Todos</button>
-          <button onClick={() => handleCategoriaFilterChange('eudora')}>Eudora</button>
-          <button onClick={() => handleCategoriaFilterChange('natura')}>Natura</button>
-          <button onClick={() => handleCategoriaFilterChange('oboticario')}>OBoticário</button>
+          <div onClick={() => handleCategoriaFilterChange(null)}>
+            Todas as categorias
+          </div>
+
+          <div onClick={() => handleCategoriaFilterChange('promocao')}>
+            Promoções
+          </div>
+
+          <div onClick={() => handleCategoriaFilterChange('cuidadoFacial')}>
+            Cuidados Faciais
+          </div>
+
+          <div onClick={() => handleCategoriaFilterChange('maquiagem')}>
+            Maquiagem
+          </div>
+
+          <div onClick={() => handleCategoriaFilterChange('cuidadoCorporal')}>
+            cuidados Corporais
+          </div>
+
+          <div onClick={() => handleCategoriaFilterChange('perfumes')}>
+            Perfumes
+          </div>
+
+          <div onClick={() => handleCategoriaFilterChange('presente')}>
+            Para presentear
+          </div>
+    
         </div>
       </header>
+        {mostrarCarrinho && <CarrinhoDeCompra itensCarrinho={itensCarrinho} />}
+      
       <div>
         <ListaProdutos produtos={filteredProdutos} adicionarNoCarrinho={handleAddToCart} />
       </div>

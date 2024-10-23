@@ -7,50 +7,292 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  min-height: 100vh;	
+  width: 100vw;
+  overflow-x: hidden;
+
   display: flex;
   justify-content: center;
   text-align: center;
-  min-height: 100vh;	
-  --corDeatalhes: #10058c;
-  --corFundo: #e2d8f9;
-  --corTexto: #2f1ca5;
-  --corHover: #d0c6e6;
+
   color: var(--corTexto);
   background: var(--corFundo);
 
+  /* --corDetalhes: #10058c;
+  --corFundo: #e2d8f9;
+  --corTexto: #2f1ca5;
+  --corHover: #d0c6e6; */
+  
+  --corFundo: rgba(255, 255, 255, 0.914);
+  --corTexto: black;
+  --corDetalhes: #10058c;
+  --corTeste:rgb(13, 3, 120)c;
+  --corHover: #d0c6e6;
 }
 
-header {
-  position: fixed;
-  padding-top: 4vh;
-  top: 9%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  backdrop-filter: blur(2px);
-  z-index: 1;
-  
-  h1 {
-    margin: 0;
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
-.filter-buttons button {
-  border: 1px solid var(--corDeatalhes);
-  margin: 6px;
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px); /* Desloca para a direita */
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
+
+header {  
+  /* header geral */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  background-color: white;
+  position: sticky;
+  top: 0;
+  left: 0;
+
+
+  /* chamada para ver as xícaras */
+  .disclaimerXicaras {
+    display: flex;
+    justify-content: center;
+    background-color: red; /* Mantenha a cor de fundo desejada */
+    width: 100vw;
+    transition: opacity 1s ease-in-out; /* Transição suave para a opacidade */
+
+    p {
+     
+    }
+
+    &:hover p{
+      animation: none;
+    }
+  }
+
+  .fade-in {
+    display: visible; /* Visível */
+  }
+  
+  .fade-out {
+    display: none; /* Invisível */
+  }
+
+  /* div que envolve o titulo a pesquisa e o carrinho */
+  .tituloPesquisaCarrinho {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* div dos filtros */
+  .filter-buttons {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+  
+    /* background-color: blue; */
+    
+    div{
+      padding: 5px 15px;
+
+      &:hover {
+        background-color: var(--corHover);
+      }
+
+      &::selection {
+        border-bottom: 1px solid var(--corDetalhes);
+      }
+
+    }
+  }
+
+  /* div titulo */
+  h1 {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  /* div pesquisa */
+  .pesquisaESugestao {
+    width: 100%;
+    max-width: 400px;
+    position: relative; /* para que as sugestões sejam posicionadas relativas a essa div */
+
+    .containerPesquisa {
+      display: flex;
+      align-items: center;
+      border: 1px solid #10058c5b;
+      padding: 5px;
+      border-radius: 5px;
+      flex-wrap: wrap;
+      border: 1px solid green;
+      position: relative; /* posicionamento relativo para ajustar as sugestões */
+
+    }
+
+    .containerPesquisa:hover {
+      border: 1px solid var(--corDetalhes);
+
+    }
+
+    .sugestoes {
+      margin-top: 1vh;
+      border-radius: 5px;
+      border: 1px solid #10058c5b;
+      position: absolute; /* posição absoluta para sobrepor o conteúdo */
+      width: 100%;
+      background-color: white;
+      z-index: 1; 
+    }
+
+    .sugestoes ul {
+      list-style: none;
+      text-align: left;
+      padding-left: 1vw;
+      cursor: pointer;
+      font-size: 0.8rem;
+
+      h1 {
+        font-size: 1rem;
+        margin-bottom: 1vh;
+      }
+
+      
+      li {
+        margin: auto auto 2vh 1vw;
+        display: flex;
+    
+        p {
+          margin: 0 0 0 0.5vw;
+          padding: 0;
+        }
+      }
+    
+      .bolinha {
+        background-color: var(--corHover);
+        border-radius: 50%;
+        width: 1px;
+        height: 1px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .sugestoes li:hover {
+      color: var(--corDetalhes);
+      font-weight: bold;
+    }
+  
+    .inputPesquisa {
+      flex: 1;
+      border: none;
+      outline: none;
+    }
+  
+    .iconePesquisa {
+      color: var(--corDetalhes);
+      cursor: pointer;
+    }
+    
+    .containerPesquisa input {
+      font-size: 16px;
+      background: none;
+    }
+    
+    .containerPesquisa input::placeholder {
+      color: var(--corTexto);
+    }
+
+    .containerPesquisa input:focus {
+      color: var(--corTexto);
+    }
+  }
+  
+
+  /* div carrinho */
+  .cart-icon-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #4c00b0;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+  } 
+
+  .shopping-cart {
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 10vw;
+    height: 100%;
+    overflow-y: auto;
+    background-color: black;
+  }
+
+}
+
+
+/* produtos da pagina */
 .produto-list {
   display: flex;
   flex-wrap: wrap;
   justify-content:space-around;
-  gap: 15px;
+  gap: 4px;
   width: 90vw;
-  margin: 25vh auto 2vh 0;
+  margin: 2vh auto;
 }
 
 .produto-card {
-  border: 2px solid var(--corDeatalhes);
+  border: 2px solid var(--corDetalhes);
   border-radius: 20px;
   cursor: pointer;
   transition: transform 0.2s;
@@ -71,7 +313,7 @@ header {
 }
 .produto-card button {
   margin: 2vh 0 4vh 0;
-  border: 1px solid var(--corDeatalhes);
+  border: 1px solid var(--corDetalhes);
 }
 
 .produto-nome, .produto-descricao, .produto-preco, .produto-quantidade {
@@ -81,7 +323,7 @@ header {
 }
 
 .produto-nome {
-  color: var(--corDeatalhes);
+  color: var(--corDetalhes);
   font-size: 1.6rem;
 }
 
@@ -89,39 +331,9 @@ header {
   background-color: var(--corHover); /* Fundo cinza */
 }
 
-.shopping-cart {
-  padding: 20px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 10vw;
-  height: 100%;
-  overflow-y: auto;
-  background-color: black;
-}
-
-.cart-icon-container {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.cart-count {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: #4c00b0;
-  color: white;
-  border-radius: 50%;
-  padding: 5px 8px;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 1;
-} 
 
 @media (min-width: 320px) and (max-width: 480px) {
   header {
-    padding-top: 18dvh;
 
     h1 {
       font-size: 2.5rem;
