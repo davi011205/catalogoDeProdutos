@@ -16,9 +16,11 @@ function ListaProdutos({ produtos, adicionarNoCarrinho }) {
     setHoverProduto(null);
   };
 
+  const produtosDisponiveis = produtos.filter(produto => produto.estoque > 0);
+
   return (
     <div className="produto-list">
-      {produtos.map((produto) => (
+      {produtosDisponiveis.map((produto) => (
         <div
           key={produto.id}
           className={`produto-card ${hoverProduto === produto ? 'hovered' : ''}`}
@@ -28,14 +30,8 @@ function ListaProdutos({ produtos, adicionarNoCarrinho }) {
         >
           <img src={produto.imagem} alt={produto.nome} />
           <h3 className='produto-nome'>{produto.nome}</h3>
-          <p className='produto-descricao'>{produto.infoAdicionais}</p>
-          <p className='produto-preco'>R$ {produto.preco}</p>
-          <p className="produto-quantidade">
-            {produto.quantidade == 0 ? "Produto indisponível no momento" : `disponível: ${produto.quantidade}`}
-          </p>
-          {hoverProduto === produto && (
-            <div className="hover-content">{produto.hover}</div>
-          )}
+          <p className='produto-preco'>R$ {produto.precoAtual}</p>
+          <p className="produto-quantidade">disponível: {produto.estoque}</p>
           <button onClick={() => adicionarNoCarrinho(produto)}>Adicionar</button>
         </div>
       ))}

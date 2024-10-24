@@ -9,10 +9,12 @@ import Disclaimer from './componentes/Disclaimer';
 import { FaShoppingCart, FaSearch, FaListUl, FaStar, FaWhatsapp } from 'react-icons/fa'; 
 import SugestoesPesquisaCuidadoFacial from './componentes/SugestoesPesquisaCuidadoFacial';
 import SugestoesPesquisaMaquiagem from './componentes/SugestoesPesquisaMaquiagem';
-
+import Modal from './componentes/Modal';
 function App() {
   const [itensCarrinho, setItensCarrinho] = useState([]);
   const [produtos, setProdutos] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [mensagemModal, setMensagemModal] = useState('');
   const [selectedCategoria, setSelectedCategoria] = useState(null);
   const [mostrarCarrinho, setMostrarCarrinho] = useState(false); 
   const [mostrarSugestoes, setMostrarSugestoes] = useState(false); 
@@ -35,21 +37,35 @@ function App() {
   };
 
   const handleAddToCart = (produto) => {
-    setItensCarrinho((prevItems) => {
-      const itemExistente = prevItems.find((item) => item.id === produto.id);
+  setItensCarrinho((prevItems) => {
+    const itemExistente = prevItems.find((item) => item.id === produto.id);
+    const quantidadeAtual = itemExistente ? itemExistente.quantidade : 0;
 
-      if (itemExistente) {
-        // Se o item já existe, atualiza a quantidade
-        return prevItems.map((item) =>
-          item.id === produto.id
-            ? { ...item, quantidade: (item.quantidade || 1) + 1 } // Se quantidade não existir, inicializa como 1
-            : item
-        );
-      } else {
-        // Se o item não existe, adiciona ao carrinho
-        return [...prevItems, { ...produto, quantidade: 1 }];
-      }
-    });
+    if (quantidadeAtual + 1 > produto.quantidade) {
+      setMensagemModal("Não é possível adicionar mais do que a quantidade disponível.");
+      setMostrarModal(true);
+      return prevItems; // Não altera o carrinho
+    }
+
+    if (itemExistente) {
+      return prevItems.map((item) =>
+        item.id === produto.id
+          ? { ...item, quantidade: quantidadeAtual + 1 }
+          : item
+      );
+    } else {
+      return [...prevItems, { ...produto, quantidade: 1 }];
+    }
+  });
+
+};
+
+  const closeModal = () => {
+    setMostrarModal(false);
+  };
+
+  const closeCarrinho = () => {
+    setMostrarCarrinho(false); // Esta função oculta o carrinho
   };
 
   const filteredProdutos = selectedCategoria
@@ -60,7 +76,8 @@ function App() {
 
 
   return (
-    <div>
+    <div className='divPrincipal'>
+      {mostrarModal && <Modal mensagem={mensagemModal} onClose={closeModal} />}
       <header >
         <Disclaimer></Disclaimer>
         <div className='tituloPesquisaCarrinho'>
@@ -143,7 +160,7 @@ function App() {
     
         </div>
       </header>
-        {mostrarCarrinho && <CarrinhoDeCompra itensCarrinho={itensCarrinho} />}
+        {mostrarCarrinho && <CarrinhoDeCompra itensCarrinho={itensCarrinho} setItensCarrinho={setItensCarrinho} fecharCarrinho={closeCarrinho}/>}
       
       <div>
         <ListaProdutos produtos={filteredProdutos} adicionarNoCarrinho={handleAddToCart} />

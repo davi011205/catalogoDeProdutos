@@ -31,6 +31,10 @@
   --corHover: #d0c6e6;
 }
 
+.divPrincipal {
+  min-height: 100vh;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -289,7 +293,7 @@ header {
   top: 0;
   right: 0;
   height: 100%;
-  background-color: var(--corHover);
+  background-color: white;
   display: flex;
   flex-wrap: wrap;
   align-items: start;
@@ -302,20 +306,25 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    div {
+      font-size: 1.5rem;
+    }
   }
 
   .produtoCarrinho {
-    border: 5px solid red;
+    /* border: 5px solid red; */
     width: 100%;
     height: 75%;
     overflow-y: auto;
 
     .produtosAdicionados {
-      border: 1px solid green;
+      /* border: 10px solid green; */
       display: flex;
+      height: 20%;
 
       .imagemProdutoCarrinho {
-        border: 1px solid orange;
+        /* border: 1px solid orange; */
         width: 40%;
         display: flex;
         align-items: center;
@@ -327,14 +336,42 @@ header {
       }
 
       .detalhesProdutosCarrinho {
-        border: 2px solid purple;
+        /* border: 5px solid purple; */
         width: 60%;
+        display: flex;
+        flex-wrap: wrap;
 
         .nomeLixeiraProdutoCarrinho {
-          border: 3px solid orange;
+          /* border: 3px solid orange; */
           display: flex;
           align-items: center;
           justify-content: space-between;
+          height: 30%;
+          width: 100%;
+          p {
+            text-align: left;
+            width: 85%;
+          }
+        }
+
+        .quantidadeTotalItemProdutoCarrinho {
+          /* border: 5px solid brown; */
+          /* height: 65%; */
+          width: 100%;
+          display: flex;
+          gap: 4px;
+          align-items: center;
+
+          input {
+            width: 40px;
+            /* height: 50px; */
+            border-radius: 5px;
+            padding: 15px 10px;
+            text-align: center;
+            background: none;
+            border-color: rgba(0, 0, 0, 0.219);;
+            color: black;
+          }
         }
       }
     }
@@ -476,6 +513,42 @@ header {
   color: var(--corDetalhes);
   font-weight: bold;
 }
+
+
+/* Modal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.carrinho-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Fundo escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Certifique-se de que isso esteja acima do conteúdo da página */
+}
+
 
 @media (min-width: 320px) and (max-width: 480px) {
   header {
